@@ -1,98 +1,159 @@
-// ================= VICTRONIX GLOBAL GADGETS - script.js =================
+document.addEventListener('DOMContentLoaded',()=>{
 
-document.addEventListener('DOMContentLoaded', () => {
+/* ================= MOBILE MENU ================= */
 
-  // ===== 1. MOBILE MENU TOGGLE =====
-  const menuToggle = document.querySelector('.menu-toggle');
-  const nav = document.querySelector('nav');
+const menuToggle=document.querySelector('.menu-toggle');
+const nav=document.querySelector('nav');
 
-  if(menuToggle && nav) {
-    menuToggle.addEventListener('click', () => {
-      nav.classList.toggle('open');
-      menuToggle.textContent = nav.classList.contains('open') ? '✕' : '☰';
-    });
+if(menuToggle&&nav){
 
-    // Close menu when a link is clicked
-    nav.querySelectorAll('a').forEach(link => {
-      link.addEventListener('click', () => {
-        nav.classList.remove('open');
-        menuToggle.textContent = '☰';
-      });
-    });
-  }
+menuToggle.addEventListener('click',()=>{
 
-  // ===== 2. SMOOTH SCROLL FOR ANCHOR LINKS =====
-  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function(e) {
-      e.preventDefault();
-      const target = document.querySelector(this.getAttribute('href'));
-      if(target) {
-        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-    });
-  });
+nav.classList.toggle('open');
 
-  // ===== 3. CONTACT PRODUCT BUTTONS -> WHATSAPP =====
-  const phone1 = '2348109174991'; // 08109174991
-  const phone2 = '2348062210293'; // 08062210293
+menuToggle.textContent=
+nav.classList.contains('open')?'✕':'☰';
 
-  document.querySelectorAll('.contact-product').forEach(button => {
-    button.addEventListener('click', () => {
-      // Get product name from the card
-      const productCard = button.closest('.product-card');
-      const productName = productCard.querySelector('h4').innerText;
-      
-      const message = `Hi VICTRONIX GLOBAL GADGETS 👋\n\nI'm interested in: *${productName}*\n\nPlease send me the price and availability. Thank you!`;
-      const whatsappURL = `https://wa.me/${phone1}?text=${encodeURIComponent(message)}`;
-      
-      window.open(whatsappURL, '_blank');
-    });
-  });
-
-  // ===== 4. CONTACT FORM HANDLING =====
-  const contactForm = document.querySelector('.contact-form');
-  const formStatus = document.querySelector('.form-status');
-
-  if(contactForm) {
-    contactForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-      
-      const name = contactForm.querySelector('input[name="name"]').value;
-      const email = contactForm.querySelector('input[name="email"]').value;
-      const subject = contactForm.querySelector('select[name="subject"]').value;
-      const message = contactForm.querySelector('textarea[name="message"]').value;
-
-      // Send to WhatsApp as fallback since no backend yet
-      const waMessage = `New Message from Website\nName: ${name}\nEmail: ${email}\nSubject: ${subject}\nMessage: ${message}`;
-      const whatsappURL = `https://wa.me/${phone1}?text=${encodeURIComponent(waMessage)}`;
-      
-      window.open(whatsappURL, '_blank');
-      
-      if(formStatus) {
-        formStatus.style.color = 'var(--green)';
-        formStatus.innerText = 'Redirecting to WhatsApp... We will reply shortly!';
-      }
-      
-      contactForm.reset();
-    });
-  }
-
-  // ===== 5. CURRENT YEAR IN FOOTER =====
-  const yearSpan = document.querySelector('.copyright span');
-  if(yearSpan) {
-    yearSpan.innerText = new Date().getFullYear();
-  }
-
-  // ===== 6. HEADER SHRINK ON SCROLL =====
-  const header = document.querySelector('.site-header');
-  window.addEventListener('scroll', () => {
-    if(window.scrollY > 50) {
-      header.style.background = 'rgba(7, 8, 7, 1)';
-    } else {
-      header.style.background = 'rgba(7, 8, 7, 0.96)';
-    }
-  });
+menuToggle.setAttribute(
+'aria-expanded',
+nav.classList.contains('open')
+);
 
 });
 
-console.log('VICTRONIX JS Loaded ✅ Tech That Keeps Up With You');
+nav.querySelectorAll('a').forEach(link=>
+link.addEventListener('click',()=>{
+
+nav.classList.remove('open');
+
+menuToggle.textContent='☰';
+
+menuToggle.setAttribute(
+'aria-expanded',
+'false'
+);
+
+})
+);
+
+}
+
+
+/* ================= SMOOTH SCROLL ================= */
+
+document.querySelectorAll('a[href^="#"]').forEach(anchor=>
+anchor.addEventListener('click',function(e){
+
+e.preventDefault();
+
+const target=
+document.querySelector(this.getAttribute('href'));
+
+if(target){
+
+target.scrollIntoView({
+behavior:'smooth',
+block:'start'
+});
+
+}
+
+})
+);
+
+
+/* ================= PRODUCT WHATSAPP BUTTONS ================= */
+
+const phone1='2348109174991';
+
+document.querySelectorAll('.contact-product').forEach(button=>
+button.addEventListener('click',()=>{
+
+const message=`Hi VICTRONIX GLOBAL GADGETS 👋
+
+I'm interested in:
+*${button.dataset.product}*
+
+Please send me the price and availability. Thank you!`;
+
+window.open(
+`https://wa.me/${phone1}?text=${encodeURIComponent(message)}`,
+'_blank'
+);
+
+})
+);
+
+
+/* ================= CONTACT FORM ================= */
+
+const contactForm=
+document.querySelector('#contactForm');
+
+const formStatus=
+document.querySelector('#formStatus');
+
+if(contactForm)
+
+contactForm.addEventListener('submit',e=>{
+
+e.preventDefault();
+
+const name=
+contactForm.querySelector('[name="name"]').value.trim();
+
+const phone=
+contactForm.querySelector('[name="phone"]').value.trim();
+
+const category=
+contactForm.querySelector('[name="category"]').value;
+
+const message=
+contactForm.querySelector('[name="message"]').value.trim();
+
+
+const waMessage=`New Enquiry from VICTRONIX Website
+
+Name: ${name}
+Phone: ${phone}
+Category: ${category}
+Message: ${message}`;
+
+
+window.open(
+`https://wa.me/${phone1}?text=${encodeURIComponent(waMessage)}`,
+'_blank'
+);
+
+
+if(formStatus){
+
+formStatus.style.color='#00A651';
+
+formStatus.textContent=
+'Redirecting to WhatsApp... We will reply shortly!';
+
+}
+
+contactForm.reset();
+
+});
+
+
+/* ================= HEADER ON SCROLL ================= */
+
+const header=
+document.querySelector('.site-header');
+
+if(header)
+
+window.addEventListener('scroll',()=>{
+
+header.style.background=
+window.scrollY>50
+?'rgba(7,8,7,1)'
+:'rgba(7,8,7,.96)';
+
+});
+
+});
